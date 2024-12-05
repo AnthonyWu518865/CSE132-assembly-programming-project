@@ -5,19 +5,47 @@
 
 uint8_t slowDivisionAlgorithm8(uint8_t dividend, uint8_t divisor) {
   // TODO: Write a C-code version of division (don't use divide; use a loop with repeated subtraction!)  
+    uint8_t quotient = 0;
+    if(divisor == 0){
+      return 0;
+    }
+    while(dividend >= divisor){
+      dividend -= divisor; 
+      quotient ++;
+    }
+    return quotient;
 }
 
 
 uint16_t slowDivisionAlgorithm16(uint16_t dividend, uint16_t divisor) {
   // TODO: Write a C-code version of division (don't use divide; use a loop with repeated subtraction!)  
+  uint16_t quotient = 0;
+    if(divisor == 0){
+      return 0;
+    }
+    while(dividend >= divisor){
+      dividend -= divisor; 
+      quotient ++;
+    }
+    return quotient;
 }
 
 uint8_t slowModulusAlgorithm(uint8_t dividend, uint8_t divisor) {
   //TODO: Write a C-code version of modulus that uses your division function
+  uint8_t quotient = slowDivisionAlgorithm8(dividend,divisor);
+  uint8_t remainder = dividend - (divisor * quotient);
+  return remainder;
 }
 
 uint16_t sumOdds(uint8_t min, uint8_t max) {
   //TODO: Write a C-code function that will sum all of the odd values between min and max (inclusive)
+  uint16_t sum = 0;
+  for(uint16_t i = min; i <= max; ++i){
+    if(slowModulusAlgorithm(i, 2) == 1){
+      sum += i;
+    }
+  }
+  return sum;
 }
 
 // ******  Test cases:  Feel free to add to tests (but don't remove any) ******
@@ -159,9 +187,9 @@ void setup() {
   uint8_t quotient8ASM = slowDivisionUint8(dividend8,divisor8);
   uint8_t quotient8Alg = slowDivisionAlgorithm8(dividend8,divisor8);
   pprintf("slowDivisionAlgorithm8(%u,%u) is %u (algorithm) and %u (assembly); Should be %u\n", dividend8, divisor8, quotient8Alg, quotient8ASM, dividend8/divisor8);
-  // */ 
+  // */
   // Full Test:
-  // testSlowDivisionUint8();
+  testSlowDivisionUint8();
 
   /* Simple Test
   uint16_t a = 1234;
@@ -169,7 +197,7 @@ void setup() {
   pprintf("greaterThanOrEqualUInt16(%u,%u) is %u; Should be %u\n", a, b, greaterThanOrEqualUInt16(a,b), a>=b);
   // */
   // Full Test:
-  // testGreaterThanOrEqualUInt16();
+  testGreaterThanOrEqualUInt16();
 
   /* Simple Test
   uint16_t dividend16 = 12356;
@@ -179,7 +207,7 @@ void setup() {
   pprintf("slowDivisionUint16(%u,%u) is %u (algorithm) and %u (assembly); Should be %u\n", dividend16, divisor16, quotient16Alg, quotient16ASM, dividend16/divisor16);
   // */
   // Full Test:
-  // testSlowDivisonUint16();
+  testSlowDivisonUint16();
 
   /* Simple Test
   uint8_t dividend8 = 175;
@@ -189,7 +217,7 @@ void setup() {
   pprintf("slowModulusAlgorithm(%u,%u) is %u (algorithm) and %u (assembly); Should be %u\n", dividend8, divisor8, mod8Alg, mod8ASM, dividend8%divisor8);
   // */ 
   // Full Test:
-  // testSlowModulusUint8();
+  testSlowModulusUint8();
 
   /* Simple Test
   uint8_t arg1 = 2;
@@ -199,7 +227,7 @@ void setup() {
   pprintf("sumOdds(%u,%u) is %u (algorithm) and %u (assembly); Should be %u\n", arg1, arg2, oddsAlg, oddsASM, 15);
   // */ 
   // Full Test:
-  // testSumOddsUint8();
+  testSumOddsUint8();
 
   Serial.println("Done with tests!!!");
 }
